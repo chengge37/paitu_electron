@@ -1,0 +1,155 @@
+
+// 色块，按钮，活动图片悬浮加8%不透明#fff颜色
+.color-area{
+  position: relative;
+  &:hover:after{
+    content:'';
+    position:absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.08);
+    width: 100%;
+    height: 100%;
+  }
+}
+// 字体改变颜色成主题色
+.word-hover{
+  &:hover{
+    color: #7C6AFF!important;
+  }
+}
+// 筛选结果或者选择框的选择后样式
+.is-select{
+  &:hover{
+    /deep/ {
+      .el-input__inner{
+        border-color: #591BE0!important;
+        &::-webkit-input-placeholder{
+          color: #591BE0;
+        }
+      }
+      .el-input__icon{
+        color: #7C6AFF;
+      }
+    } 
+  }
+  /deep/{
+    .el-input__inner{
+      border-color: #aaa!important;
+    }
+    .el-input__inner:active{
+      border-color: #591BE0!important;
+    }
+    .el-input__inner:focus{
+      border-color: #591BE0!important;
+    }
+    .el-input__inner:visited{
+      border-color: #591BE0!important;
+    }
+  }
+}
+// 橙色字体悬浮时
+.orange-hover{
+  &:hover{
+    color: #E0581B;
+  }
+}
+// 有紫色下划线的tab选项悬浮时字体颜色变深，紫色线条出现
+.tab-hover{
+  &:hover{
+    color: #333!important;
+    span:first-child{
+      border-bottom: 2px solid #734ae2;
+    }
+  }
+}
+// 多选项的文字标签悬浮时
+.check-label-hover{
+  &:hover{
+    color: #7C6AFF;
+  }
+}
+// 所有卡片项悬浮出现阴影
+.card-hover{
+  &:hover{
+    box-shadow: 0 0 8px #ebebeb;
+  }
+}
+
+
+//给搜索框聚焦时添加边框
+.input-focus{
+    &:focus{
+        border-color:#7C6AFF!important;
+    }
+}
+
+//上一页，下一页边框变成主题色
+.page-hover{
+    &:hover{
+      color: #7C6AFF!important;
+      border-color:#7C6AFF!important;
+    }
+}
+
+//默认移入移出效果，透明度降低
+.default-hover{
+    &:hover{
+      opacity:0.6!important;
+    }
+}
+
+//radio选项组，移入后字体变成主题色
+.radio-setting{
+    /deep/ {
+        .radio-hover {
+            margin-right: 20px;
+            margin-bottom:5px;
+            &:hover{
+                .el-radio__label {
+                    color:#7C6AFF;
+                }
+            }
+        }
+    }
+}
+
+// 滚动条样式修改，工作台页面
+.new-scroll{
+  &::-webkit-scrollbar{
+      // 设置滚动条宽度
+      width:6px;
+    }
+    &::-webkit-scrollbar-track{
+      // 设置滚动槽样式
+      background: #fff;
+      border-radius:3px;
+    }
+    &::-webkit-scrollbar-thumb{
+      // 设置滚动条背景颜色和圆角
+      background: #F0F0F0;
+      border-radius:3px;
+    }
+    &::-webkit-scrollbar-thumb:hover{
+      // 滚动条hover样式
+      // background: #333;
+    }
+}
+
+// 暂无数据
+.nodata{
+  font-size: 20px;
+  color: #333;
+  margin: 0 auto;
+  text-align: center;
+}
+
+
+.animation-long{
+  animation-duration: 3s;
+  animation-iteration-count: infinite;//动画持续执行
+}
+.animation-three{
+  animation-duration: 3s;
+  animation-iteration-count: 3;//动画持续执行
+}

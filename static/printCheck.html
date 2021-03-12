@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>打印核验单</title>
+  <style>
+    * {
+      font-weight: 400;
+      font-size: 12px;
+    }
+
+    .page {
+      page-break-after: always;
+    }
+
+    .goods .detail {
+      display: flex;
+      align-items: center;
+    }
+
+    .goods .detail div {
+      padding-left: 15px;
+      font-size: 14px;
+    }
+
+    .goods img {
+      width: 260px;
+      height: auto;
+    }
+
+    .print {
+      cursor: pointer;
+      width: 70px;
+      text-align: center;
+      margin-left: 400px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="print" @click="print">打印核验单</div>
+    <div class="first-page page">
+      <div class="goods" v-for="item in data.list" :key="item.id">
+        <p>{{item.name}}</p>
+        <div class="detail"><img :src="item.pic">
+          <div>{{item.content}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="secend-page page" v-html="data.content"></div>
+  </div>
+</body>
+<script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+<script>
+const { ipcRenderer } = require('electron')
+new Vue({
+  el: '#app',
+  data: {
+    data: ''
+  },
+  created () {
+    ipcRenderer.on('send-data', (event, arg) => {
+      this.data = arg
+    })
+  },
+  methods: {
+    print () {
+      window.print()
+    }
+  }
+})
+</script>
+
+</html>

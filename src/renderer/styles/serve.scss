@@ -1,0 +1,140 @@
+//主站后台通用样式
+/deep/ .newServe {
+    .el-radio-button__inner{
+        border-radius:0px!important;
+        padding:9px!important;
+    }
+    .el-radio-button__orig-radio:checked+.el-radio-button__inner{
+        background:$Theme-color;
+        border-color:$Theme-color;
+        box-shadow:none;
+    }
+    
+    .el-table{
+        border-radius:0px;
+        thead{
+            th{
+                background:#F0FAFF;
+                color:#333;
+                padding:0px;
+                height:40px;
+                .el-input .el-input__inner{
+                    align-self: center;
+                    padding: 0;
+                    border: none;
+                    background: none;
+                    text-align: center;
+                    color: #333;
+                    font-weight: 600;
+                    &::-webkit-input-placeholder {
+                        color: #333;
+                    }
+                    &::-moz-input-placeholder {
+                        color: #333;
+                    }
+                    &::-ms-input-placeholder {
+                        color: #333;
+                    }
+                }
+                .el-input__suffix {
+                    right: 15px;
+                }
+            }
+        }
+    }
+    .el-table td, .el-table th.is-leaf{
+        border-bottom:1px solid #F8F7FA;
+    }
+    .mainInfo{
+        background:#fff;
+    }
+    .bottomBtn{
+        margin-top:20px;
+        display:flex;
+        justify-content:flex-start;
+        align-items:center;
+        .el-button{
+            border-radius:0px;
+            &.el-button--primary{
+                background:#17CE66;
+            }
+            &.el-button--default{
+                background:#fff;
+                border:1px solid #D9D9D9;
+            }
+            &:hover{
+                opacity:0.8;
+            }
+        }
+    }
+    .themeBtn{
+        background:$Theme-color!important;
+        color:#fff;
+    }
+    .btn-hover{
+        &:hover{
+            opacity:0.8;
+        }
+    }
+    .el-form{
+        .el-input{
+            width:230px;
+        }
+        .el-input__inner{
+            height:46px;
+            border-radius:0px;
+        }
+    }
+    .info-set {
+        display: flex;
+        margin-bottom: 16px;
+        line-height: 22px;
+        border-bottom:1px solid #F0F0F0;
+        .info-title {
+            font-size: 20px;
+            padding:20px 0px;
+            
+        }
+    }
+    .el-card{
+        border:none;
+    }
+}
+
+/deep/{
+    .notEditBtn{
+        cursor:not-allowed;
+        background-color: rgb(217,218,219)!important;
+    }
+    .el-button--primary{
+        background-color:$Theme-color;
+        border-radius:0px;
+        &:hover,&:focus{
+            background:$Theme-color;
+            box-shadow:0px 2px 8px 0px rgba(124,106,255,0.32);
+        }
+    }
+    .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+        background:$Theme-color;
+        border-color:$Theme-color;
+    }
+    .el-checkbox__input.is-focus .el-checkbox__inner{
+//      background:$Theme-color;
+        border-color:$Theme-color;
+    }
+    
+    
+    .el-date-editor--daterange.el-input, 
+    .el-date-editor--daterange.el-input__inner, 
+    .el-date-editor--timerange.el-input, 
+    .el-date-editor--timerange.el-input__inner{
+        width:250px;
+        border-radius:0px;
+    }
+    .el-date-editor .el-range-separator{
+        width:10%;
+    }
+    
+}
+
+

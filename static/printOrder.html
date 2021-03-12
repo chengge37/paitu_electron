@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>订单打印</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-size: 12px;
+    }
+
+    .content-box {
+        padding: 20px;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        color: #666666;
+    }
+
+    .printbtn {
+        cursor: pointer;
+    }
+
+    .main {
+        margin-top: 20px;
+    }
+
+    .title-box {
+        background-color: #FAFAFA;
+        width: 100%;
+        padding: 10px;
+        color: #666666;
+    }
+
+    .order-top {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .remark {
+        padding: 10px;
+    }
+
+    .table-box table {
+        width: 100%;
+    }
+
+    .table-box .total {
+        margin-top: 20px;
+        text-align: right;
+        padding-right: 40px;
+    }
+
+    .table-box .total div {
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    .table-box .total .money {
+        font-size: 20px;
+    }
+
+    .userInfo {
+        display: flex;
+        align-items: baseline;
+        padding: 20px 20px 0px 40px;
+    }
+
+    .userInfo .userList {
+        margin-right: 80px;
+    }
+
+    .userInfo .userList:last-child {
+        margin-right: 0px;
+    }
+
+    .main ul {
+        list-style: none;
+        padding: 10px;
+    }
+
+    .main ul li {
+        margin-bottom: 10px;
+    }
+
+    .line {
+        background-color: #FAFAFA;
+        height: 1px;
+        width: 100%;
+    }
+
+    .name {
+        color: #999999;
+    }
+
+    .value {
+        color: #333;
+        font-weight: 600;
+    }
+</style>
+
+<body>
+    <div id="order">
+        <div class="content-box" ref="print">
+            <div class="header">
+                <div>{{storeName}}</div>
+                <div class="printbtn no-print" @click="satrtprint">订单打印</div>
+                <div>打印日期：{{new Date().getTime()|timeDate}}</div>
+            </div>
+            <div class="main">
+                <div class="title-box">订单信息</div>
+                <div class="order-top">
+                    <ul>
+                        <li>
+                            <span class="name">订单编号：</span>
+                            <span class="value">{{rowdata.show_id}}</span>
+                        </li>
+                        <li>
+                            <span class="name">订单开始：</span>
+                            <span class="value">{{rowdata.start_time}}</span>
+                        </li>
+                        <li>
+                            <span class="name">订单类型：</span>
+                            <span class="value" v-if="rowdata.has_studio == 1&&rowdata.has_equipment == 0">
+                                影棚订单
+                            </span>
+                            <span class="value" v-if="rowdata.has_equipment == 1&&rowdata.has_studio == 0">
+                                设备订单
+                            </span>
+                            <span class="value" v-if="rowdata.has_studio == 1&&rowdata.has_equipment == 1">
+                                影棚（含设备）订单
+                            </span>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <span class="name">下单时间：</span>
+                            <span class="value">{{rowdata.create_time | time2Date}}</span>
+                        </li>
+                        <li>
+                            <span class="name">订单结束：</span>
+                            <span class="value">{{rowdata.end_time}}</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="line"></div>
+                <ul class="userList" v-if="rowdata.user">
+                    <li>
+                        <span class="name">客户名称：</span>
+                        <span class="value" v-if="rowdata.user">{{rowdata.user.nick}}</span>
+                    </li>
+                    <li>
+                        <span class="name">联系方式：</span>
+                        <span class="value" v-if="rowdata.user">{{rowdata.user.mobile}}</span>
+                    </li>
+                </ul>
+                <ul class="userList" v-else>
+                    <li>
+                        <span class="name">客户名称：</span>
+                        <span class="value" v-if="rowdata.customer">{{rowdata.customer.name}}</span>
+                    </li>
+                    <li>
+                        <span class="name">联系方式：</span>
+                        <span class="value" v-if="rowdata.customer">{{rowdata.customer.mobile}}</span>
+                    </li>
+                </ul>
+                <div class="title-box">订单明细</div>
+                <div class="table-box">
+                    <table>
+                        <tr>
+                            <th style="width: 200px;">名字</th>
+                            <th>数量</th>
+                            <th>器材SN码</th>
+                            <!-- <th>总价</th> -->
+                            <th>时间</th>
+                            <th>价格</th>
+                        </tr>
+                        <tr v-if="form.studio_name">
+                            <th>{{form.studio_name}}</th>
+                            <th>1</th>
+                            <th>影棚sn码</th>
+                            <th>{{form.studio_start_time}}</th>
+                            <th>{{show?`￥${parseInt(form.studio_price)}`:"**"}}</th>
+                        </tr>
+                        <tr v-for="(item,index) in form.device" :key="index">
+                            <th>{{item.equip.static.name}}</th>
+                            <th>{{item.order_count}}</th>
+                            <th>
+                                <div>
+                                    <span v-for="(sn_code,index) in item.equip.sn_array">{{sn_code.sn}},</span>
+
+                                </div>
+                            </th>
+                            <th>{{form.studio_start_time}}</th>
+                            <th>
+                                {{show?`￥${item.price}`:"**"}}
+                            </th>
+                        </tr>
+                    </table>
+                    <div class="total">
+                        <div class="money">{{show?`￥${totalCount}`:"**"}}</div>
+                        <div>订单总价</div>
+                    </div>
+                </div>
+
+                <div class="title-box">备注信息</div>
+                <div class="remark">{{rowdata.remark||"无"}}</div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+<script>
+const { format } = require('date-fns')
+const { ipcRenderer } = require('electron')
+new Vue({
+  el: '#order',
+  data: {
+    rowdata: {},
+    form: {},
+    show: true,
+    totalCount: 0,
+    storeName: '店铺名'
+  },
+  methods: {
+    satrtprint: function () {
+      window.print()
+    }
+  },
+  created: function () {
+    ipcRenderer.on('send-data', (event, arg) => {
+      this.rowdata = arg.rowdata
+      this.form = arg.form
+      this.show = arg.showprice
+      this.storeName = arg.storeName
+    })
+  },
+  filters: {
+    timeDate: function (value) {
+      return format(value, 'YYYY-MM-DD')
+    },
+    time2Date: function (value) {
+      return format(new Date(value * 1000), 'YYYY-MM-DD')
+    },
+    payStatus: function (status) {
+      const statusMap = {
+        1: '未支付',
+        2: '已经支付',
+        3: '订单进行中',
+        4: '退款中',
+        5: '退款完成',
+        6: '订单进行中',
+        7: '订单结束，待评论',
+        8: '订单结束，评论完成'
+      }
+      return statusMap[status]
+    }
+  },
+  watch: {
+    form (newVal) {
+      let money = 0
+      if (newVal.hasOwnProperty('studio_price')) {
+        money += parseInt(newVal.studio_price)
+      };
+      for (item of newVal.device) {
+        money += parseInt(item.price)
+      }
+      this.totalCount = money
+    }
+  }
+})
+</script>
+
+</html>

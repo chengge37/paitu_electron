@@ -1,0 +1,399 @@
+
+
+.app-container {
+    background: #F9F9F9;
+}
+
+
+.line {
+    margin-top: -16px;
+}
+
+.top-order {
+    margin: 20px 0px 20px 0px;
+
+    .order-group {
+        background: #fff;
+        height: 20px;
+    }
+}
+
+.tableList {
+    box-sizing: border-box;
+
+    .list-item {
+        background: #fff;
+        border: 1px solid rgba(238, 238, 238, 1);
+        margin-bottom: 30px;
+
+        .info {
+            display: flex;
+            align-items: center;
+
+            .el-checkbox {
+                /*margin-right:21px;*/
+                margin-right: 1vw;
+            }
+
+            .number {
+                margin: 0px 2vw 0px 2vw;
+                max-width: 170px;
+            }
+        }
+
+        .el-rate {
+            display: inline-block;
+        }
+
+        .list-head {
+            background:#F0FAFF;
+        }
+
+        .list-head,
+        .list-body {
+            display: flex;
+        }
+    }
+
+    .operate,.valid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .merge {
+        display: flex;
+        flex: 6;
+    }
+
+    width:100%;
+
+    .info {
+        flex: 3.5;
+        padding-left: 1.5vw;
+    }
+
+    .comment,
+    .myReply{
+        flex: 1;
+    }
+
+    .operate,.valid {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .comment,
+    .merge,
+    .operate,
+    .valid {
+        text-align: center;
+    }
+}
+
+
+
+
+.list-head {
+    height: 54px;
+    line-height: 54px;
+    border-bottom: 1px solid rgba(238, 238, 238, 1);
+}
+
+.list-body {
+    display: flex;
+    align-items: center;
+    height: 150px;
+
+    &>div {
+        height: 100%;
+        box-sizing: border-box;
+        border-right: 1px solid rgba(238, 238, 238, 1);
+
+        &:last-child {
+            border-right: none;
+        }
+    }
+
+    .comment {
+        // border-right: 1px solid rgba(238, 238, 238, 1);
+    }
+
+    .info {
+        display: flex;
+        padding-top: 1vw;
+        padding-bottom: 1vw;
+
+        .detail {
+            flex: 1;
+
+            ul {
+                overflow: hidden;
+                /*margin-left:18px;*/
+                /*margin-right:9px;*/
+                margin-left: 1vw;
+                margin-right: 0.5vw;
+
+                li {
+                    float: left;
+                    width: 50%;
+                    /*margin:8px 0px;*/
+                    margin: 0.8vh 0px;
+                    color: #666;
+                    align-items: center;
+
+                    span {
+                        color: #333;
+                    }
+
+                    &:last-child {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        .img {
+            /*width:136px;
+                height:110px;*/
+            width: 7vw;
+            height: 10vh;
+        }
+    }
+
+    .comment,
+    .myReply,
+    .replyDetail {
+        justify-content: center;
+        text-align: center;
+        line-height: 23px;
+        box-sizing: border-box;
+        padding: 10px 20px 0px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &>div {
+            display: inline-block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        span {
+            color: #999;
+        }
+    }
+
+    .myReply {
+        position: relative;
+        overflow: hidden;
+
+        &.over {
+            cursor: pointer;
+            justify-content: flex-start;
+        }
+    }
+
+    .replyDetail {
+        display: none !important;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        border: 1px solid rgba(204, 204, 204, 1);
+        box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.15);
+        width: 24vw;
+        //          max-height:685px;
+        max-height: 60vh;
+        overflow: auto;
+        border-radius: 5px;
+        background: #fff;
+
+        &>div {
+            display: block;
+        }
+    }
+
+    .myReply:hover {
+        overflow: visible;
+
+        .replyDetail {
+            display: block !important;
+            z-index: 100000;
+        }
+    }
+}
+
+
+//评论列表表格
+.commentList {
+    .info {
+        flex: 2;
+    }
+
+    .comment,
+    .imgList {
+        flex: 1;
+    }
+
+    .imgList {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        ul {
+            display: flex;
+
+            li {
+                margin-right: 5px;
+            }
+        }
+    }
+
+    .list-body {
+        .comment {
+            &>div {
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px 20px 0px;
+            }
+        }
+    }
+}
+
+
+.questionList,
+.replyList {
+    ul {
+        li {
+            width: 100% !important;
+        }
+    }
+
+    .detail {
+        .address {
+            display: flex;
+
+            p {
+                flex: auto;
+            }
+
+            span {
+                flex: 13;
+            }
+        }
+    }
+}
+
+.noData{
+    display:flex;
+    justify-content:center;
+}
+.page {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.bottom-button {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+    /deep/ .el-button--primary {
+        background-color: $Theme-color;
+        border-color: $Theme-color;
+    }
+
+    /deep/ .el-button--default {
+        color: $Theme-color;
+    }
+}
+
+.replyTextarea {
+    margin-bottom: 20px;
+}
+
+
+.date {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.text-overflow {
+    /*如下为超出隐藏显示为省略号的核心代码*/
+    overflow: hidden;
+    /* 内容超出宽度时隐藏超出部分的内容 */
+    text-overflow: ellipsis;
+    /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+    word-break: keep-all;
+    /* 不换行 */
+    white-space: nowrap;
+    /* 不换行 */
+}
+
+/deep/ .el-rate__icon {
+    margin-right: 2px;
+}
+
+/deep/ .el-rate__text {
+    margin-left: 5px !important;
+}
+
+.list-body .el-button+.el-button {
+    margin-left: 0px;
+}
+
+.top-order .order-group /deep/ .el-radio {
+    color: #000;
+}
+
+.top-order .order-group /deep/ .el-radio__inner {
+    background: #fff;
+}
+
+.el-tabs--card /deep/ .el-tabs__header .el-tabs__nav {
+    border: none;
+}
+
+.el-tabs--card /deep/ .el-tabs__header .el-tabs__item {
+    background: rgba(238, 238, 238, 1);
+    border-radius: 5px 5px 0px 0px;
+}
+
+.el-tabs--card /deep/ .el-tabs__header .el-tabs__item.is-active {
+    background: $Theme-color;
+    border-radius: 5px 5px 0px 0px;
+    color: #fff;
+}
+
+.el-tabs--card /deep/ .el-tabs__item:hover {
+    color: $Theme-color
+}
+
+/*.fade-enter-active, .fade-leave-active {
+      transition: opacity .5s;
+    }*/
+
+.fade-enter,
+.fade-leave-to
+/* .fade-leave-active below version 2.1.8 */
+
+    {
+    opacity: 0;
+}
+
+
+@media screen and (max-width: 1600px) {
+    .list-head {
+        .number {
+            margin: 0 0.3vw !important;
+        }
+
+        .el-checkbox {
+            margin-right: 0px !important;
+        }
+    }
+}

@@ -1,0 +1,98 @@
+﻿<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>初始化</title>
+  <style>
+    html {
+      user-select: none;
+      -webkit-app-region: no-drag;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      pointer-events: none;
+    }
+
+    .content1 {
+      width: 100%;
+      height: 425px;
+      position: relative;
+      color: white;
+    }
+
+    .content1 img {
+      position: absolute;
+      width: 100%;
+      height: auto;
+    }
+
+    .introduction {
+      position: absolute;
+      bottom: 30px;
+      left: 20px;
+      font-size: 24px;
+    }
+
+    .introduction span {
+      font-size: 16px;
+    }
+
+    .loading {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      font-size: 2px;
+    }
+
+    .loading span {
+      font-size: 14px;
+    }
+
+    .loading span:not(:nth-child(1)) {
+      visibility: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content1">
+    <img src="./loading.jpg" alt="">
+    <!-- <img src="" alt=""> -->
+    <div class="introduction">
+      派图影像管理软件&nbsp;<span>V1.3.0</span>
+    </div>
+    <div class="loading">
+      <span>loading</span>&nbsp;
+      <span>.</span>&nbsp;
+      <span>.</span>&nbsp;
+      <span>.</span>&nbsp;
+      <span>.</span>&nbsp;
+      <span>.</span>&nbsp;
+      <span>.</span>
+    </div>
+  </div>
+
+</body>
+<script>
+  const loading = document.getElementsByClassName('loading')[0]
+  const dotList = loading.getElementsByTagName('span')
+  let num = 1
+  setInterval(() => {
+    if (num === 7) {
+      for (let i = 1; i < num; i++) {
+        dotList[i].style.visibility = 'hidden'
+      }
+      num = 0
+    }
+    dotList[num].style.visibility = 'visible'
+    num++
+  }, 300)
+</script>
+
+</html>

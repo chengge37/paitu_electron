@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>打印机器码</title>
+  <style>
+    .printArea ul {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .printArea ul li {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .printArea ul li span {
+      width: 80px;
+      /* overflow: hidden; */
+      text-overflow: ellipsis;
+      /* white-space: nowrap; */
+      word-break: break-all;
+      font-size: 8px;
+    }
+
+    .overTip {
+      width: 80px;
+      /* overflow: hidden; */
+      text-overflow: ellipsis;
+      word-break: break-all;
+      font-size: 8px;
+      margin:3px 0;
+      /* white-space: nowrap; */
+    }
+
+    .barList li {
+      margin-right: 20px;
+    }
+
+    .barList li:nth-child(4n) {
+      /* margin-right: 0px; */
+    }
+
+    #qrcode {
+      display: flex;
+      align-items: center;
+    }
+
+    #qrcode img {
+      margin-right: 20px;
+    }
+
+    #print {
+      position: fixed;
+      right: 20px;
+      bottom: 30px;
+      color: #17CE66;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="order">
+    <div ref="print" class='printInfo' v-show="type==0">
+      <div class="printArea">
+        <ul class="barList">
+          <li v-for="(item,index) in printList" :key="index">
+            <img :id="'barcode'+index" />
+            <span>{{item.name}}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div ref='print2' class='printInfo' v-show="type==1">
+      <div class="printArea">
+        <ul class="barList">
+          <li v-for="(item,index) in printList" :key="index">
+            <div :id="'qrcode'+index" :ref="'qrcode'+index"></div>
+            <span style="margin:5px 0px;">{{item.code}}</span>
+            <p class="overTip">{{item.name}}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div @click="satrtprint" id="print">打印</div>
+  </div>
+</body>
+<script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+<script>
+const { ipcRenderer } = require('electron')
+const QRCode = require('qrcodejs2')
+var JsBarcode = require('jsbarcode')
+const vm = new Vue({
+  el: '#order',
+  data: {
+    rowdata: {},
+    form: {},
+    show: true,
+    totalCount: 0,
+    storeName: '店铺名',
+    sendData: {},
+    type: -1,
+    printList: []
+  },
+  methods: {
+    satrtprint: function () {
+      document.getElementById('print').style.display = 'none'
+      window.print()
+      document.getElementById('print').style.display = 'block'
+    },
+    // 生成条形码
+    createBarCode (id, text) {
+      JsBarcode('#' + id, text, {
+        format: 'CODE128', // 选择要使用的条形码类型 比较长
+        text: text, // 显示文本
+        displayValue: true, // 是否在条形码下方显示文字
+        textPosition: 'bottom', // 设置文本的垂直位置
+        background: '#fff', // 设置条形码的背景
+        fontSize: 10, // 设置文本的大小
+        width: 1,
+        height: 30,
+        lineColor: '#000', // 设置条和文本的颜色。
+        margin: 15 // 设置条形码周围的空白边距
+      })
+    },
+    // 生成二维码
+    qrcode (id, text) {
+      // 和div的id相同 必须是id  class类名会报错
+      this.qrCode = new QRCode('qrcode' + id, {
+        width: 80,
+        height: 80,
+        text: text,
+        colorDark: '#000',
+	      colorLight: '#fff',
+	      correctLevel: QRCode.CorrectLevel.L
+      })
+    }
+  },
+  mounted () {
+    const pro = new Promise((resolve, reject) => {
+      ipcRenderer.on('send-data', (event, arg) => {
+        this.printList = arg.list
+        this.type = arg.type
+        resolve(this.printList)
+      })
+    })
+    pro.then(res => {
+      this.printList = res
+      this.printList.forEach((item, index) => {
+        this.createBarCode('barcode' + index, item.code + '')
+      })
+      // 生成二维码
+      this.printList.forEach((item, index) => {
+        console.log('od')
+        this.qrcode(index, item.code + '')
+      })
+    })
+  }
+
+})
+</script>
+
+</html>

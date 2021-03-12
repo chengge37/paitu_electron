@@ -1,0 +1,49 @@
+<template>
+  <svg :class="svgClass" aria-hidden="true">
+    <use :xlink:href="iconName" />
+  </svg>
+</template>
+
+<script>
+export default {
+  name: "ali-svg-icon",
+  props: {
+    iconClass: {
+      type: String,
+      required: true
+    },
+    className: {
+      type: String
+    }
+  },
+  computed: {
+    iconName() {
+      return `#paitu_icon-${this.iconClass}`;
+    },
+    svgClass() {
+      if (this.className) {
+        return "svg-default " + this.className;
+      } else {
+        return "svg-icon";
+      }
+    }
+  }
+};
+</script>
+
+<style scoped>
+.svg-icon {
+  width: 16px;
+  height: 15px;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+.svg-default {
+  width: 16px;
+  height: 15px;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+</style>

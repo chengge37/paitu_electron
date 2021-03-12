@@ -1,0 +1,163 @@
+<template>
+  <div
+    v-if="!item.hidden&&item.children.length !== 0"
+    class="menu-wrapper"
+    :class="collapse?``:`active-menu-wrapper`"
+  >
+    <div v-if="item.onlyShowfirst">
+      <router-link
+        v-if="OneShowingChild(item.children[0]) && !onlyOneChild.children&&!item.alwaysShow"
+        :to="resolvePath(onlyOneChild.path)"
+        onclick="window.location = this.href; return false;"
+      >
+        <el-menu-item
+          :index="resolvePath(onlyOneChild.path)"
+          :class="{'submenu-title-noDropdown':!isNest}"
+        >
+          <ali-svg-icon
+            v-if="onlyOneChild.meta&&onlyOneChild.meta.icon"
+            :icon-class="onlyOneChild.meta.icon"
+          ></ali-svg-icon>
+          <span
+            v-if="onlyOneChild.meta&&onlyOneChild.meta.title"
+            slot="title"
+          >{{onlyOneChild.meta.title}}</span>
+        </el-menu-item>
+      </router-link>
+    </div>
+
+    <div v-else>
+      <router-link
+        v-if="hasOneShowingChild(item.children) && !onlyOneChild.children&&!item.alwaysShow"
+        :to="resolvePath(onlyOneChild.path)"
+        onclick="window.location = this.href; return false;"
+      >
+        <el-menu-item
+          :index="resolvePath(onlyOneChild.path)"
+          :class="{'submenu-title-noDropdown':!isNest}"
+        >
+          <ali-svg-icon
+            v-if="onlyOneChild.meta&&onlyOneChild.meta.icon"
+            :icon-class="onlyOneChild.meta.icon"
+          ></ali-svg-icon>
+          <span
+            v-if="onlyOneChild.meta&&onlyOneChild.meta.title"
+            slot="title"
+          >{{onlyOneChild.meta.title}}</span>
+        </el-menu-item>
+      </router-link>
+
+      <el-submenu v-else :index="item.name||item.path">
+        <template slot="title">
+          <ali-svg-icon v-if="item.meta&&item.meta.icon" :icon-class="item.meta.icon"></ali-svg-icon>
+          <span v-if="item.meta&&item.meta.title" slot="title">{{item.meta.title}}</span>
+        </template>
+
+        <template v-for="child in item.children" v-if="!child.hidden">
+          <sidebar-item
+            :is-nest="true"
+            class="nest-menu"
+            v-if="child.children&&child.children.length>0"
+            :item="child"
+            :key="child.path"
+            :base-path="resolvePath(child.path)"
+          ></sidebar-item>
+
+          <router-link
+            v-else
+            :to="resolvePath(child.path)"
+            :key="child.name"
+            onclick="window.location = this.href; return false;"
+          >
+            <el-menu-item :index="resolvePath(child.path)">
+              <ali-svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"></ali-svg-icon>
+              <span v-if="child.meta&&child.meta.title" slot="title">{{child.meta.title}}</span>
+            </el-menu-item>
+          </router-link>
+        </template>
+      </el-submenu>
+    </div>
+  </div>
+</template>
+
+<script>
+// import path from "path";
+
+export default {
+  name: "SidebarItem",
+  props: {
+    // route配置json
+    item: {
+      type: Object,
+      required: true
+    },
+    isNest: {
+      type: Boolean,
+      default: false
+    },
+    basePath: {
+      type: String,
+      default: ""
+    },
+    collapse: {
+      type: Boolean,
+      required: true
+    }
+  },
+  data() {
+    return {
+      onlyOneChild: null
+    };
+  },
+  methods: {
+    hasOneShowingChild(children) {
+      const showingChildren = children.filter(item => {
+        if (item.hidden) {
+          return false;
+        } else {
+          this.onlyOneChild = item;
+          return true;
+        }
+      });
+      if (showingChildren.length === 1) {
+        return true;
+      }
+      return false;
+    },
+    resolvePath(...paths) {
+      return this.basePath + "/" + paths[0];
+    },
+    OneShowingChild(children) {
+      this.onlyOneChild = children;
+      return true;
+    }
+  }
+};
+</script>
+<style lang="scss" scoped>
+@import "@/styles/color.scss";
+.menu-wrapper {
+  /deep/ .el-menu-item,
+  .el-submenu__title {
+    height: 46px;
+    line-height: 46px;
+  }
+  /deep/ a {
+    background-color: #ffc248;
+  }
+  /deep/ .el-menu-item:hover {
+    color: #ffffff !important;
+  }
+  /deep/ .el-menu-item.is-active {
+    background-color: $Theme-color !important;
+  }
+  /deep/ .el-menu-item {
+    padding: 0 20px 0 12px;
+  }
+}
+.active-menu-wrapper {
+  /deep/ .el-menu-item.is-active {
+    margin-left: 8px;
+  }
+}
+</style>
